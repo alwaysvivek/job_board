@@ -5,12 +5,13 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export default async function JobDetailPage({ params }: PageProps) {
+  const { id } = await params
   const job = await prisma.job.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       user: {
         select: {
