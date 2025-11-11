@@ -5,7 +5,7 @@ A modern, full-featured job board built with Next.js 14, TypeScript, React, Tail
 ## 🚀 Tech Stack
 
 ### Frontend Development
-- **Next.js 14+** - React framework with App Router, SSR/SSG support
+- **Next.js 15** - React framework with App Router, SSR/SSG support
 - **React 18** - UI library with modern hooks and patterns
 - **TypeScript** - Type-safe JavaScript for better developer experience
 - **Tailwind CSS** - Utility-first CSS framework for responsive design
@@ -35,7 +35,7 @@ A modern, full-featured job board built with Next.js 14, TypeScript, React, Tail
 - **Vitest** - Unit testing framework
 - **Playwright** - End-to-end testing
 - **TypeScript** - Type checking
-- **ESLint** - Code linting
+- **ESLint 9** - Code linting with Next.js integration
 
 ### Performance & Optimization
 - **SSR/SSG** - Server-side rendering and static site generation

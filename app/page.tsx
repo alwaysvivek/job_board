@@ -6,11 +6,12 @@ import FilterBar from '@/components/FilterBar'
 export const revalidate = 60 // Revalidate every 60 seconds
 
 interface PageProps {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function HomePage({ searchParams }: PageProps) {
-  const jobType = searchParams.jobType as string | undefined
+  const resolvedParams = await searchParams
+  const jobType = resolvedParams.jobType as string | undefined
 
   const jobs = await prisma.job.findMany({
     where: jobType ? { jobType } : {},
