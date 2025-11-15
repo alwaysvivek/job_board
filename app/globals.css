@@ -16,7 +16,7 @@ body {
       rgb(var(--background-end-rgb)) 100%
     );
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -62,5 +62,11 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  @supports not (text-wrap: balance) {
+    .text-balance {
+      text-align: left;
+    }
   }
 }
