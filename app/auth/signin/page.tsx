@@ -51,20 +51,21 @@ function SignInForm() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+    <div className="glass rounded-glass p-8">
+      <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent text-center">
         Sign In
       </h1>
+      <p className="text-gray-600 mb-8 text-center">Welcome back! Sign in to your account</p>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg" role="alert">
-          <p className="text-red-800">{error}</p>
+        <div className="mb-6 p-4 glass-dark border-red-300 rounded-glass" role="alert">
+          <p className="text-red-700 font-medium">{error}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
             Email
           </label>
           <input
@@ -81,7 +82,7 @@ function SignInForm() {
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
             Password
           </label>
           <input
@@ -100,7 +101,7 @@ function SignInForm() {
         <button
           type="submit"
           disabled={loading}
-          className="btn-primary w-full"
+          className="btn-primary w-full py-3"
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </button>
@@ -108,7 +109,7 @@ function SignInForm() {
 
       <p className="mt-6 text-center text-sm text-gray-600">
         Don&apos;t have an account?{' '}
-        <Link href="/auth/signup" className="text-primary-600 hover:text-primary-700 font-medium">
+        <Link href="/auth/signup" className="text-primary-600 hover:text-primary-700 font-semibold transition-colors duration-300">
           Sign up
         </Link>
       </p>
@@ -118,11 +119,11 @@ function SignInForm() {
 
 export default function SignInPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Header />
       
       <main className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <Suspense fallback={<div className="text-center">Loading...</div>}>
+        <Suspense fallback={<div className="text-center glass rounded-glass p-8">Loading...</div>}>
           <SignInForm />
         </Suspense>
       </main>

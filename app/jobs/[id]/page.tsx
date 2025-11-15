@@ -27,25 +27,28 @@ export default async function JobDetailPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Header />
       
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Link 
           href="/" 
-          className="text-primary-600 hover:text-primary-700 font-medium mb-6 inline-block"
+          className="text-primary-600 hover:text-primary-700 font-semibold mb-8 inline-flex items-center gap-2 transition-colors duration-300"
           aria-label="Back to all jobs"
         >
-          ← Back to Jobs
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Jobs
         </Link>
 
-        <article className="bg-white rounded-lg shadow-md p-8">
-          <div className="flex items-start justify-between mb-6">
+        <article className="glass rounded-glass p-8 md:p-10">
+          <div className="flex items-start justify-between mb-8">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent mb-3">
                 {job.title}
               </h1>
-              <p className="text-lg text-gray-600">
+              <p className="text-lg text-gray-700 font-medium">
                 {job.jobAuthor || job.user?.name || 'Anonymous'}
               </p>
             </div>
@@ -55,57 +58,57 @@ export default async function JobDetailPage({ params }: PageProps) {
                 alt={`${job.title} company logo`}
                 width={80}
                 height={80}
-                className="rounded-lg object-cover ml-6"
+                className="rounded-glass object-cover ml-6 shadow-glass"
               />
             )}
           </div>
 
-          <div className="flex flex-wrap gap-3 mb-6">
-            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+          <div className="flex flex-wrap gap-3 mb-8">
+            <span className="tag bg-gradient-to-r from-primary-50 to-primary-100 text-primary-700 border-primary-200 text-sm">
               {job.jobType}
             </span>
-            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+            <span className="tag bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 border-gray-200 text-sm">
               📍 {job.location}
             </span>
             {job.remoteOk && (
-              <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800">
+              <span className="tag bg-gradient-to-r from-green-50 to-green-100 text-green-700 border-green-200 text-sm">
                 🌐 Remote OK
               </span>
             )}
           </div>
 
-          <div className="prose max-w-none mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-3">Description</h2>
-            <div className="text-gray-700 whitespace-pre-wrap">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Description</h2>
+            <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">
               {job.description}
             </div>
           </div>
 
           {job.url && (
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Company Website</h3>
+            <div className="mb-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Company Website</h3>
               <a
                 href={job.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-600 hover:text-primary-700 hover:underline"
+                className="text-primary-600 hover:text-primary-700 font-medium hover:underline transition-colors duration-300"
               >
                 {job.url}
               </a>
             </div>
           )}
 
-          <div className="pt-6 border-t border-gray-200">
+          <div className="pt-8 border-t border-white/40">
             <a
               href={job.applyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary inline-block text-center text-lg"
+              className="btn-primary inline-block text-center text-lg px-12 py-4"
               aria-label={`Apply for ${job.title}`}
             >
               Apply Now
             </a>
-            <p className="text-sm text-gray-500 mt-4">
+            <p className="text-sm text-gray-500 mt-6 font-medium">
               Posted on {new Date(job.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',

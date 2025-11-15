@@ -13,14 +13,14 @@ export default function FilterBar({ selectedType }: FilterBarProps) {
   const searchParams = useSearchParams()
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-6" role="navigation" aria-label="Job type filters">
-      <div className="flex flex-wrap gap-2">
+    <div className="glass rounded-glass p-4 mb-8" role="navigation" aria-label="Job type filters">
+      <div className="flex flex-wrap gap-3">
         <Link
           href="/"
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
             !selectedType
-              ? 'bg-primary-600 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-glass'
+              : 'glass-dark text-gray-700 hover:bg-white/70'
           }`}
           aria-current={!selectedType ? 'page' : undefined}
         >
@@ -34,10 +34,10 @@ export default function FilterBar({ selectedType }: FilterBarProps) {
             <Link
               key={type}
               href={`${pathname}?${params.toString()}`}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
                 selectedType === type
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-glass'
+                  : 'glass-dark text-gray-700 hover:bg-white/70'
               }`}
               aria-current={selectedType === type ? 'page' : undefined}
             >

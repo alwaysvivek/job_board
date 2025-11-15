@@ -41,15 +41,15 @@ export default async function HomePage({ searchParams }: PageProps) {
   }))
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Header />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mb-12 text-center">
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-primary-600 to-gray-900 bg-clip-text text-transparent">
             Find Your Next Opportunity
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 font-medium">
             Browse {jobs.length} available job{jobs.length !== 1 ? 's' : ''} from top companies
           </p>
         </div>
