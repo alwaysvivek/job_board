@@ -1,6 +1,6 @@
 # Job Board - Modern Full-Stack Application
 
-A modern, full-featured job board built with Next.js 14, TypeScript, React, Tailwind CSS, and Stripe payments. This application demonstrates best practices in frontend development, UX design, testing, and performance optimization.
+A modern, full-featured job board built with Next.js 15, TypeScript, React, and Tailwind CSS with glassmorphism design. This application demonstrates best practices in frontend development, UX design, testing, and performance optimization.
 
 ## 🚀 Tech Stack
 
@@ -27,9 +27,6 @@ A modern, full-featured job board built with Next.js 14, TypeScript, React, Tail
 - **Bcrypt** - Password hashing
 - **Zod** - Schema validation
 
-### Payment Integration
-- **Stripe** - Payment processing for job postings
-- **Stripe Elements** - Customizable payment forms
 
 ### Testing & Quality
 - **Vitest** - Unit testing framework
@@ -49,7 +46,6 @@ Before running this application, make sure you have:
 
 - **Node.js** 18.x or higher ([Download](https://nodejs.org/))
 - **npm** or **yarn** package manager
-- **Stripe Account** for payment processing ([Sign up](https://stripe.com/))
 
 ## 🛠️ Installation & Setup
 
@@ -85,11 +81,6 @@ DATABASE_URL="file:./dev.db"
 # NextAuth.js
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-secret-key-generate-with-openssl-rand-base64-32"
-
-# Stripe
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
-STRIPE_SECRET_KEY="sk_test_..."
-STRIPE_WEBHOOK_SECRET="whsec_..."
 ```
 
 **Generate a secure NEXTAUTH_SECRET:**
@@ -251,8 +242,7 @@ job_board/
 
 ### For Employers
 - User registration and authentication
-- Post job listings with Stripe payment ($300)
-- Secure payment processing
+- Post job listings
 - Job management
 
 ### Technical Features
@@ -272,7 +262,6 @@ job_board/
 - CSRF protection via NextAuth.js
 - SQL injection prevention via Prisma
 - XSS protection via React
-- Secure payment processing via Stripe
 - Environment variables for sensitive data
 
 ## 🎨 UX & Design Principles
@@ -314,9 +303,6 @@ Make sure to set these in your Vercel dashboard:
 - `DATABASE_URL`
 - `NEXTAUTH_URL`
 - `NEXTAUTH_SECRET`
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-- `STRIPE_SECRET_KEY`
-- `STRIPE_WEBHOOK_SECRET`
 
 ## 🤝 Contributing
 

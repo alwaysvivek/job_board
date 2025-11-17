@@ -12,21 +12,18 @@ export default async function NewJobPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <Header />
       
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent">
           Post a New Job
         </h1>
+        <p className="text-gray-600 mb-8 text-lg">
+          Share your opportunity with thousands of qualified candidates
+        </p>
         
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-blue-800">
-              <strong>Posting Fee:</strong> $300.00 - Your job will be featured on our platform and reach thousands of qualified candidates.
-            </p>
-          </div>
-          
+        <div className="glass rounded-glass p-8 md:p-10">
           <JobForm />
         </div>
       </main>
