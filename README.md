@@ -4,8 +4,11 @@ A modern, full-featured job board built with Next.js 15, TypeScript, React, and 
 
 ## 📚 Additional Documentation
 
-- **[📊 Skills Coverage Analysis](./SKILLS_ANALYSIS.md)** - Comprehensive analysis of which frontend development skills this project demonstrates
-- **[✅ Skills Checklist](./SKILLS_CHECKLIST.md)** - Quick reference checklist of covered skills and resume value assessment
+> **New!** Looking to understand if this project covers modern frontend development skills? Check out our comprehensive analysis:
+
+- **[📝 Executive Summary](./SUMMARY.md)** - Quick answers: Does this cover the skills? Is it resume-worthy? Will I get shortlisted? What's next?
+- **[📊 Skills Coverage Analysis](./SKILLS_ANALYSIS.md)** - Detailed analysis of which frontend development skills this project demonstrates (14/16 covered!)
+- **[✅ Skills Checklist](./SKILLS_CHECKLIST.md)** - Quick reference checklist of covered skills and resume value assessment (8.5/10 rating)
 - **[🚀 Improvement Roadmap](./IMPROVEMENT_ROADMAP.md)** - Actionable improvements to make this project even stronger for your portfolio
 
 ## 🚀 Tech Stack
