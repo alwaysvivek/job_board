@@ -2,6 +2,12 @@
 
 A modern, full-featured job board built with Next.js 15, TypeScript, React, and Tailwind CSS with glassmorphism design. This application demonstrates best practices in frontend development, UX design, testing, and performance optimization.
 
+## 📚 Additional Documentation
+
+- **[📊 Skills Coverage Analysis](./SKILLS_ANALYSIS.md)** - Comprehensive analysis of which frontend development skills this project demonstrates
+- **[✅ Skills Checklist](./SKILLS_CHECKLIST.md)** - Quick reference checklist of covered skills and resume value assessment
+- **[🚀 Improvement Roadmap](./IMPROVEMENT_ROADMAP.md)** - Actionable improvements to make this project even stronger for your portfolio
+
 ## 🚀 Tech Stack
 
 ### Frontend Development
