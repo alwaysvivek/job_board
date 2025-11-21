@@ -1,5 +1,11 @@
 # Summary: Frontend Skills Assessment for Job Board Project
 
+> **🎓 ARE YOU A FRESHER/ENTRY-LEVEL?**  
+> If you have no internship experience, read **[ENTRY_LEVEL_GUIDE.md](./ENTRY_LEVEL_GUIDE.md)** first!  
+> **TL;DR**: Your project is EXCELLENT for entry-level positions (9.5/10). No major modifications needed!
+
+---
+
 ## 🎯 Quick Answer to Your Questions
 
 ### Question 1: Does this project cover all the skills you mentioned?
