@@ -3,6 +3,8 @@
 
 generator client {
   provider = "prisma-client-js"
+  // If you want the ultra-fast Prisma 7 ESM client, use:
+  // provider = "prisma-client" 
 }
 
 datasource db {
