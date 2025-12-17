@@ -1,26 +1,25 @@
-import { PrismaClient } from '../generated/prisma';
+// lib/prisma.ts
+import { PrismaClient } from '../generated/prisma'; // Ensure this matches your schema.prisma output
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { Pool } from '@neondatabase/serverless';
 
 const prismaClientSingleton = () => {
-  // 1. Create a connection pool using your Env Var
   const connectionString = process.env.DATABASE_URL;
   const pool = new Pool({ connectionString });
-
-  // 2. Initialize the Neon adapter
   const adapter = new PrismaNeon(pool);
-
-  // 3. Pass the adapter to the Prisma Client
+  
+  // Note: Prisma 7 requires the adapter in the constructor
   return new PrismaClient({ adapter });
 };
 
-// Standard Next.js singleton pattern to prevent too many connections
+// Use "prisma" instead of "prismaGlobal" for cleaner naming
 declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+  prisma: ReturnType<typeof prismaClientSingleton> | undefined;
 } & typeof global;
 
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
+// CHANGE: We are now exporting a NAMED constant 'prisma'
+export const prisma = globalThis.prisma ?? prismaClientSingleton();
 
-export default prisma;
+if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma;
 
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma;
+// REMOVE: export default prisma; (if it was there)
