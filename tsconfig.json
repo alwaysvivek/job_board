@@ -21,10 +21,10 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "@prisma/client": ["./generated/prisma/client"]
     },
     "target": "ES2017"
   },
@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    "generated/prisma/**/*.ts"
   ],
   "exclude": [
     "node_modules"
