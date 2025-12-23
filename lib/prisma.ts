@@ -15,7 +15,9 @@ const prismaClientSingleton = () => {
 
   // If the error persists, try passing the pool instance directly 
   // ensuring types match the adapter's expectations
-  const adapter = new PrismaNeon(pool);
+    const adapter = new PrismaNeon({
+        connectionString: process.env.DATABASE_URL as string
+    });
 
   return new PrismaClient({ adapter });
 };
