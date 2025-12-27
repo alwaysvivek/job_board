@@ -1,21 +1,21 @@
-// lib/prisma.ts
-import { PrismaClient } from '../generated/prisma/client'; 
+import { PrismaClient } from '../generated/prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
-import { Pool, neonConfig } from '@neondatabase/serverless';
+import { neonConfig } from '@neondatabase/serverless';
 import ws from 'ws';
 
-// Mandatory fix for the "b.mask" error in Node.js environments
+// 1. Mandatory WebSocket polyfill for Vercel/Node.js environment
+// This prevents the "b.mask is not a function" error.
 if (typeof window === 'undefined') {
   neonConfig.webSocketConstructor = ws;
 }
 
 const prismaClientSingleton = () => {
-  const connectionString = process.env.DATABASE_URL;
-  const pool = new Pool({ connectionString });
+  // 2. Ensure the URL is treated strictly as a string
+  const connectionString = `${process.env.DATABASE_URL}`;
 
-  // Use 'any' to bypass the PoolConfig vs Pool type mismatch in v7
-  // This allows the runtime to use the pool while satisfying the build-time type checker
-  const adapter = new PrismaNeon(pool as any);
+  // 3. Initialize the adapter directly with the string
+  // This bypasses the Pool vs PoolConfig type mismatch.
+  const adapter = new PrismaNeon({ connectionString });
 
   return new PrismaClient({ adapter });
 };
