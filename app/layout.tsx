@@ -4,7 +4,7 @@ import { Providers } from './providers'
 
 export const metadata: Metadata = {
   title: 'Job Board - Find Your Next Opportunity',
-  description: 'A modern job board with payment integration for posting jobs',
+  description: 'A modern job board with glassmorphism design for posting and finding jobs',
   keywords: ['jobs', 'careers', 'employment', 'hiring'],
 }
 

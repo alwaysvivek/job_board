@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { stripe, STRIPE_PRICE_AMOUNT } from '@/lib/stripe'
 import { z } from 'zod'
 
 const jobSchema = z.object({
@@ -14,7 +13,6 @@ const jobSchema = z.object({
   jobAuthor: z.string().optional(),
   remoteOk: z.boolean(),
   applyUrl: z.string().url('Invalid application URL'),
-  paymentMethodId: z.string().min(1, 'Payment method is required'),
 })
 
 export async function POST(req: NextRequest) {
@@ -28,27 +26,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const validatedData = jobSchema.parse(body)
 
-    // Create Stripe charge
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: STRIPE_PRICE_AMOUNT,
-      currency: 'usd',
-      payment_method: validatedData.paymentMethodId,
-      confirm: true,
-      description: `Job posting: ${validatedData.title}`,
-      metadata: {
-        userId: session.user.id,
-        jobType: validatedData.jobType,
-      },
-      return_url: `${process.env.NEXTAUTH_URL}/jobs`,
-    })
-
-    if (paymentIntent.status !== 'succeeded') {
-      return NextResponse.json(
-        { error: 'Payment failed' },
-        { status: 400 }
-      )
-    }
-
     // Create job
     const job = await prisma.job.create({
       data: {
@@ -61,14 +38,6 @@ export async function POST(req: NextRequest) {
         remoteOk: validatedData.remoteOk,
         applyUrl: validatedData.applyUrl,
         userId: session.user.id,
-      },
-    })
-
-    // Update user with payment info
-    await prisma.user.update({
-      where: { id: session.user.id },
-      data: {
-        stripeId: paymentIntent.id,
       },
     })
 

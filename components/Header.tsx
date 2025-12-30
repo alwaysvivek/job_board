@@ -7,14 +7,14 @@ export default function Header() {
   const { data: session } = useSession()
 
   return (
-    <header className="bg-white shadow-sm" role="banner">
+    <header className="sticky top-0 z-50 glass" role="banner">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4" aria-label="Main navigation">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-primary-600 hover:text-primary-700 transition-colors">
+          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent hover:from-primary-600 hover:to-primary-700 transition-all duration-300">
             Job Board
           </Link>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             {session ? (
               <>
                 <Link
@@ -36,7 +36,7 @@ export default function Header() {
               <>
                 <Link
                   href="/auth/signin"
-                  className="text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-300"
                 >
                   Sign In
                 </Link>
