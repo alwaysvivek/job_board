@@ -3,15 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { JOB_TYPES } from '@/types'
-import { loadStripe } from '@stripe/stripe-js'
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
-
-function JobFormContent() {
+export default function JobForm() {
   const router = useRouter()
-  const stripe = useStripe()
-  const elements = useElements()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
@@ -37,39 +31,16 @@ function JobFormContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!stripe || !elements) {
-      return
-    }
-
     setLoading(true)
     setError(null)
 
     try {
-      // Create payment method
-      const cardElement = elements.getElement(CardElement)
-      if (!cardElement) {
-        throw new Error('Card element not found')
-      }
-
-      const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
-      })
-
-      if (stripeError) {
-        throw new Error(stripeError.message)
-      }
-
-      // Submit job with payment method
       const response = await fetch('/api/jobs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          paymentMethodId: paymentMethod.id,
-        }),
+        body: JSON.stringify(formData),
       })
 
       if (!response.ok) {
@@ -223,43 +194,13 @@ function JobFormContent() {
         </label>
       </div>
 
-      <div className="pt-6 border-t border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Information</h3>
-        <div className="p-4 border border-gray-300 rounded-lg">
-          <CardElement
-            options={{
-              style: {
-                base: {
-                  fontSize: '16px',
-                  color: '#424770',
-                  '::placeholder': {
-                    color: '#aab7c4',
-                  },
-                },
-                invalid: {
-                  color: '#9e2146',
-                },
-              },
-            }}
-          />
-        </div>
-      </div>
-
       <button
         type="submit"
-        disabled={!stripe || loading}
+        disabled={loading}
         className="btn-primary w-full text-lg"
       >
-        {loading ? 'Processing...' : 'Post Job - $300.00'}
+        {loading ? 'Posting...' : 'Post Job'}
       </button>
     </form>
-  )
-}
-
-export default function JobForm() {
-  return (
-    <Elements stripe={stripePromise}>
-      <JobFormContent />
-    </Elements>
   )
 }

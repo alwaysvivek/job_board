@@ -21,12 +21,6 @@ export interface User {
   email: string
   image?: string | null
   admin: boolean
-  stripeId?: string | null
-  cardBrand?: string | null
-  cardLast4?: string | null
-  cardExpMonth?: string | null
-  cardExpYear?: string | null
-  expiresAt?: Date | null
   createdAt: Date
   updatedAt: Date
 }
