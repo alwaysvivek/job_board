@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import Header from '@/components/Header'
 
 interface PageProps {
@@ -48,10 +49,12 @@ export default async function JobDetailPage({ params }: PageProps) {
               </p>
             </div>
             {job.avatar && (
-              <img
+              <Image
                 src={job.avatar}
                 alt={`${job.title} company logo`}
-                className="w-20 h-20 rounded-lg object-cover ml-6"
+                width={80}
+                height={80}
+                className="rounded-lg object-cover ml-6"
               />
             )}
           </div>

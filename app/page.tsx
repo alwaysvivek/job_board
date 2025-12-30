@@ -27,6 +27,18 @@ export default async function HomePage({ searchParams }: PageProps) {
     },
   })
 
+  // Transform jobs to match the Job type
+  const transformedJobs = jobs.map(job => ({
+    ...job,
+    user: job.user ? {
+      ...job.user,
+      id: '',
+      admin: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } : undefined
+  }))
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -43,7 +55,7 @@ export default async function HomePage({ searchParams }: PageProps) {
 
         <FilterBar selectedType={jobType} />
         
-        <JobList jobs={jobs} />
+        <JobList jobs={transformedJobs} />
       </main>
     </div>
   )

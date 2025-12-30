@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Job } from '@/types'
 
 interface JobCardProps {
@@ -19,10 +20,12 @@ export default function JobCard({ job }: JobCardProps) {
             </p>
           </div>
           {job.avatar && (
-            <img
+            <Image
               src={job.avatar}
               alt={`${job.title} company logo`}
-              className="w-12 h-12 rounded-lg object-cover ml-4"
+              width={48}
+              height={48}
+              className="rounded-lg object-cover ml-4"
             />
           )}
         </div>
