@@ -60,13 +60,13 @@ export default function JobForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg" role="alert">
-          <p className="text-red-800">{error}</p>
+        <div className="p-4 glass-dark border-red-300 rounded-glass" role="alert">
+          <p className="text-red-700 font-medium">{error}</p>
         </div>
       )}
 
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
           Job Title *
         </label>
         <input
@@ -82,7 +82,7 @@ export default function JobForm() {
       </div>
 
       <div>
-        <label htmlFor="jobAuthor" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="jobAuthor" className="block text-sm font-semibold text-gray-700 mb-2">
           Company Name *
         </label>
         <input
@@ -99,7 +99,7 @@ export default function JobForm() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="jobType" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="jobType" className="block text-sm font-semibold text-gray-700 mb-2">
             Job Type *
           </label>
           <select
@@ -117,7 +117,7 @@ export default function JobForm() {
         </div>
 
         <div>
-          <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2">
             Location *
           </label>
           <input
@@ -134,7 +134,7 @@ export default function JobForm() {
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">
           Job Description *
         </label>
         <textarea
@@ -144,13 +144,13 @@ export default function JobForm() {
           value={formData.description}
           onChange={handleChange}
           rows={8}
-          className="input-field"
+          className="input-field resize-none"
           placeholder="Describe the role, requirements, and benefits..."
         />
       </div>
 
       <div>
-        <label htmlFor="applyUrl" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="applyUrl" className="block text-sm font-semibold text-gray-700 mb-2">
           Application URL *
         </label>
         <input
@@ -166,7 +166,7 @@ export default function JobForm() {
       </div>
 
       <div>
-        <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="url" className="block text-sm font-semibold text-gray-700 mb-2">
           Company Website
         </label>
         <input
@@ -180,26 +180,26 @@ export default function JobForm() {
         />
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center space-x-3 glass-dark p-4 rounded-glass">
         <input
           type="checkbox"
           id="remoteOk"
           name="remoteOk"
           checked={formData.remoteOk}
           onChange={handleChange}
-          className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+          className="h-5 w-5 text-primary-600 focus:ring-primary-500 border-gray-300 rounded-lg cursor-pointer"
         />
-        <label htmlFor="remoteOk" className="ml-2 block text-sm text-gray-700">
-          Remote position
+        <label htmlFor="remoteOk" className="text-sm font-medium text-gray-700 cursor-pointer">
+          🌐 This is a remote position
         </label>
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="btn-primary w-full text-lg"
+        className="btn-primary w-full text-lg py-4"
       >
-        {loading ? 'Posting...' : 'Post Job'}
+        {loading ? 'Posting Job...' : 'Post Job'}
       </button>
     </form>
   )
