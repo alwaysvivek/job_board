@@ -1,14 +1,22 @@
 // lib/prisma.ts
-import { PrismaClient } from '../generated/prisma'; // Ensure this matches your schema.prisma output
+import { PrismaClient } from '../generated/prisma/client'; 
 import { PrismaNeon } from '@prisma/adapter-neon';
-import { Pool } from '@neondatabase/serverless';
+import { Pool, neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
+
+// Required for the serverless driver to work in Node environments
+neonConfig.webSocketConstructor = ws;
 
 const prismaClientSingleton = () => {
   const connectionString = process.env.DATABASE_URL;
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaNeon(pool);
   
-  // Note: Prisma 7 requires the adapter in the constructor
+  // Create the pool directly with the connection string
+  const pool = new Pool({ connectionString });
+
+  // If the error persists, try passing the pool instance directly 
+  // ensuring types match the adapter's expectations
+  const adapter = new PrismaNeon(pool);
+
   return new PrismaClient({ adapter });
 };
 
