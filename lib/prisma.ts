@@ -1,24 +1,22 @@
 import { PrismaClient } from '../generated/prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
-import { neonConfig } from '@neondatabase/serverless';
+import { Pool, neonConfig } from '@neondatabase/serverless';
 import ws from 'ws';
 
-// 1. Mandatory WebSocket polyfill for Vercel/Node.js environment
-// This prevents the "b.mask is not a function" error.
+// Required to fix WebSocket errors in Node.js (Vercel Serverless)
 if (typeof window === 'undefined') {
-  neonConfig.webSocketConstructor = ws;
+    neonConfig.webSocketConstructor = ws;
 }
 
 const prismaClientSingleton = () => {
-  // 2. Ensure the URL is treated strictly as a string
-  const connectionString = `${process.env.DATABASE_URL}`;
+    const connectionString = `${process.env.DATABASE_URL}`;
 
-  // 3. Initialize the adapter directly with the string
-  // This bypasses the Pool vs PoolConfig type mismatch.
-  const adapter = new PrismaNeon({ connectionString });
+    // Using a Pool is recommended for managing connections
+    const pool = new Pool({ connectionString });
+    const adapter = new PrismaNeon(pool);
 
-  return new PrismaClient({ adapter });
-};
+    return new PrismaClient({ adapter });
+}; 
 
 declare const globalThis: {
   prisma: ReturnType<typeof prismaClientSingleton> | undefined;
