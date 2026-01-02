@@ -160,17 +160,6 @@ npm run test:e2e    # Run Playwright E2E tests
 
 ---
 
-## 🚢 Deployment
-
-Fully optimized for **Vercel**:
-
-1. Push your repository to GitHub.
-2. Connect the repository in the Vercel dashboard.
-3. Configure environment variables.
-4. Deploy with one click.
-
----
-
 ## 📝 License
 
 This project is licensed under the **MIT License**.
