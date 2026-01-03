@@ -53,7 +53,8 @@ export default function BookmarkButton({ jobId, initialBookmarked = false }: Boo
       router.refresh()
     } catch (error) {
       console.error('Error toggling bookmark:', error)
-      alert(error instanceof Error ? error.message : 'Failed to update bookmark')
+      // Revert optimistic update on error
+      setIsBookmarked(!isBookmarked)
     } finally {
       setIsLoading(false)
     }

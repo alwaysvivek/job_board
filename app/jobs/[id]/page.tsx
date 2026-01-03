@@ -16,12 +16,6 @@ export default async function JobDetailPage({ params }: PageProps) {
   const session = await getServerSession(authOptions)
   const { id } = await params
   
-  // Increment view count
-  await prisma.job.update({
-    where: { id },
-    data: { viewCount: { increment: 1 } }
-  }).catch(() => {}) // Silently fail if job doesn't exist
-
   const job = await prisma.job.findUnique({
     where: { id },
     include: {
@@ -42,6 +36,12 @@ export default async function JobDetailPage({ params }: PageProps) {
   if (job.expiresAt && new Date(job.expiresAt) < new Date()) {
     notFound()
   }
+
+  // Increment view count asynchronously (non-blocking)
+  prisma.job.update({
+    where: { id },
+    data: { viewCount: { increment: 1 } }
+  }).catch(() => {}) // Fire and forget
 
   // Check if current user can edit this job
   let canEdit = false

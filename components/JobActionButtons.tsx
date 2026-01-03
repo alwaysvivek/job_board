@@ -35,7 +35,7 @@ export default function JobActionButtons({ jobId, onDeleteSuccess, variant = 'se
       }
       router.refresh()
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to delete job')
+      console.error('Error deleting job:', error)
       setIsDeleting(false)
       setShowConfirm(false)
     }
