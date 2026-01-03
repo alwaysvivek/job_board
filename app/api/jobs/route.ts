@@ -13,6 +13,7 @@ const jobSchema = z.object({
   jobAuthor: z.string().optional(),
   remoteOk: z.boolean(),
   applyUrl: z.string().url('Invalid application URL'),
+  expiresAt: z.string().optional().or(z.literal('')),
 })
 
 export async function POST(req: NextRequest) {
@@ -37,6 +38,7 @@ export async function POST(req: NextRequest) {
         jobAuthor: validatedData.jobAuthor,
         remoteOk: validatedData.remoteOk,
         applyUrl: validatedData.applyUrl,
+        expiresAt: validatedData.expiresAt ? new Date(validatedData.expiresAt) : null,
         userId: session.user.id,
       },
     })

@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
-import JobActions from '@/components/JobActions'
+import JobActionButtons from '@/components/JobActionButtons'
+import BookmarkButton from '@/components/BookmarkButton'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
@@ -14,6 +15,13 @@ interface PageProps {
 export default async function JobDetailPage({ params }: PageProps) {
   const session = await getServerSession(authOptions)
   const { id } = await params
+  
+  // Increment view count
+  await prisma.job.update({
+    where: { id },
+    data: { viewCount: { increment: 1 } }
+  }).catch(() => {}) // Silently fail if job doesn't exist
+
   const job = await prisma.job.findUnique({
     where: { id },
     include: {
@@ -30,6 +38,11 @@ export default async function JobDetailPage({ params }: PageProps) {
     notFound()
   }
 
+  // Check if expired
+  if (job.expiresAt && new Date(job.expiresAt) < new Date()) {
+    notFound()
+  }
+
   // Check if current user can edit this job
   let canEdit = false
   if (session?.user?.id) {
@@ -39,6 +52,18 @@ export default async function JobDetailPage({ params }: PageProps) {
     })
     canEdit = job.userId === session.user.id || currentUser?.admin === true
   }
+
+  // Check if bookmarked
+  const isBookmarked = session?.user?.id 
+    ? await prisma.bookmark.findUnique({
+        where: {
+          userId_jobId: {
+            userId: session.user.id,
+            jobId: id,
+          },
+        },
+      }).then(b => !!b)
+    : false
 
   return (
     <div className="min-h-screen">
@@ -56,14 +81,17 @@ export default async function JobDetailPage({ params }: PageProps) {
           Back to Jobs
         </Link>
 
-        <JobActions jobId={job.id} canEdit={canEdit} />
+        {canEdit && <JobActionButtons jobId={job.id} />}
 
         <article className="glass rounded-glass p-8 md:p-10">
-          <div className="flex items-start justify-between mb-8">
+          <div className="flex items-start justify-between mb-6">
             <div className="flex-1">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent mb-3">
-                {job.title}
-              </h1>
+              <div className="flex items-start justify-between mb-3">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-primary-600 bg-clip-text text-transparent">
+                  {job.title}
+                </h1>
+                <BookmarkButton jobId={job.id} initialBookmarked={isBookmarked} />
+              </div>
               <p className="text-lg text-gray-700 font-medium">
                 {job.jobAuthor || job.user?.name || 'Anonymous'}
               </p>
@@ -124,13 +152,33 @@ export default async function JobDetailPage({ params }: PageProps) {
             >
               Apply Now
             </a>
-            <p className="text-sm text-gray-500 mt-6 font-medium">
-              Posted on {new Date(job.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </p>
+            <div className="flex flex-wrap gap-4 mt-6">
+              <p className="text-sm text-gray-500 font-medium">
+                Posted on {new Date(job.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </p>
+              {job.viewCount > 0 && (
+                <p className="text-sm text-gray-500 font-medium flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  {job.viewCount} view{job.viewCount !== 1 ? 's' : ''}
+                </p>
+              )}
+              {job.expiresAt && (
+                <p className="text-sm text-gray-500 font-medium">
+                  Expires on {new Date(job.expiresAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+              )}
+            </div>
           </div>
         </article>
       </main>

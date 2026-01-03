@@ -10,9 +10,19 @@ export interface Job {
   applyUrl: string
   avatar?: string | null
   userId: string
+  viewCount: number
+  expiresAt?: Date | null
   createdAt: Date
   updatedAt: Date
   user?: Partial<User>
+  bookmarks?: Bookmark[]
+}
+
+export interface Bookmark {
+  id: string
+  userId: string
+  jobId: string
+  createdAt: Date
 }
 
 export interface User {
@@ -39,4 +49,5 @@ export interface JobFormData {
   remoteOk: boolean
   applyUrl: string
   avatar?: string
+  expiresAt?: string
 }

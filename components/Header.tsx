@@ -18,6 +18,13 @@ export default function Header() {
             {session ? (
               <>
                 <Link
+                  href="/bookmarks"
+                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-300"
+                  aria-label="Bookmarked jobs"
+                >
+                  Bookmarks
+                </Link>
+                <Link
                   href="/dashboard"
                   className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-300"
                   aria-label="My dashboard"

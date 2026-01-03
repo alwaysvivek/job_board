@@ -23,6 +23,7 @@ export default function JobForm({ job, mode = 'create' }: JobFormProps) {
     jobAuthor: job?.jobAuthor || '',
     remoteOk: job?.remoteOk || false,
     applyUrl: job?.applyUrl || '',
+    expiresAt: job?.expiresAt ? new Date(job.expiresAt).toISOString().split('T')[0] : '',
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -187,6 +188,22 @@ export default function JobForm({ job, mode = 'create' }: JobFormProps) {
           className="input-field"
           placeholder="https://company.com"
         />
+      </div>
+
+      <div>
+        <label htmlFor="expiresAt" className="block text-sm font-semibold text-gray-700 mb-2">
+          Expiry Date (Optional)
+        </label>
+        <input
+          type="date"
+          id="expiresAt"
+          name="expiresAt"
+          value={formData.expiresAt}
+          onChange={handleChange}
+          className="input-field"
+          min={new Date().toISOString().split('T')[0]}
+        />
+        <p className="text-xs text-gray-500 mt-1">Job will be automatically hidden after this date</p>
       </div>
 
       <div className="flex items-center space-x-3 glass-dark p-4 rounded-glass">

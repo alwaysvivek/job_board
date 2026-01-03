@@ -4,9 +4,10 @@ import JobCard from './JobCard'
 
 interface JobListProps {
   jobs: Job[]
+  bookmarkedJobIds?: string[]
 }
 
-export default function JobList({ jobs }: JobListProps) {
+export default function JobList({ jobs, bookmarkedJobIds = [] }: JobListProps) {
   if (jobs.length === 0) {
     return (
       <div className="text-center py-12">
@@ -19,7 +20,11 @@ export default function JobList({ jobs }: JobListProps) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list" aria-label="Job listings">
       {jobs.map((job) => (
-        <JobCard key={job.id} job={job} />
+        <JobCard 
+          key={job.id} 
+          job={job} 
+          isBookmarked={bookmarkedJobIds.includes(job.id)} 
+        />
       ))}
     </div>
   )

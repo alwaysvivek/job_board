@@ -23,6 +23,7 @@ model User {
   updatedAt         DateTime  @updatedAt
   
   jobs              Job[]
+  bookmarks         Bookmark[]
   accounts          Account[]
   sessions          Session[]
 }
@@ -74,12 +75,30 @@ model Job {
   applyUrl    String
   avatar      String?
   userId      String
+  viewCount   Int      @default(0)
+  expiresAt   DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookmarks Bookmark[]
 
   @@index([userId])
   @@index([jobType])
   @@index([createdAt])
+  @@index([expiresAt])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  jobId     String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job  Job  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@index([userId])
+  @@index([jobId])
 }

@@ -13,6 +13,7 @@ const jobSchema = z.object({
   jobAuthor: z.string().optional(),
   remoteOk: z.boolean(),
   applyUrl: z.string().url('Invalid application URL'),
+  expiresAt: z.string().optional().or(z.literal('')),
 })
 
 interface RouteContext {
@@ -104,6 +105,7 @@ export async function PUT(
         jobAuthor: validatedData.jobAuthor,
         remoteOk: validatedData.remoteOk,
         applyUrl: validatedData.applyUrl,
+        expiresAt: validatedData.expiresAt ? new Date(validatedData.expiresAt) : null,
       },
     })
 
