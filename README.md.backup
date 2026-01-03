@@ -1,0 +1,330 @@
+# Job Board — Modern Full-Stack Rewrite (Next.js 15)
+
+A modern, high-performance job board built with **Next.js 15**, **TypeScript**, and **Tailwind CSS**. This project re-imagines the classic *“Let’s Build: With Ruby on Rails”* Job Board series using today’s React ecosystem.
+
+This project focuses on clean UX, type safety, testing, and Core Web Vitals, while intentionally removing payments to keep the core product simple, extensible, and deployment-friendly.
+
+---
+
+## 📖 Overview
+
+* **Evolution:** Rewritten from a Rails monolith to a component-driven full-stack app.
+* **Performance:** Optimized for SSR, SSG, and ISR for maximum speed and SEO.
+* **Quality:** Emphasis on frontend excellence and production-grade patterns.
+* **Purpose:** Designed as a portfolio-ready reference project for modern developers.
+
+---
+
+## 🔄 Rails → Next.js Evolution
+
+| Feature | Original (Rails) | Modern Rewrite |
+| --- | --- | --- |
+| **Framework** | Ruby on Rails 5/6 | **Next.js 15 (App Router)** |
+| **Styling** | Bulma CSS | **Tailwind CSS + Glassmorphism** |
+| **Auth** | Devise | **NextAuth.js** |
+| **ORM** | ActiveRecord | **Prisma** |
+| **Payments** | Stripe | ❌ Removed |
+| **State** | Server Views | **TanStack Query** |
+| **Testing** | RSpec/Minitest | **Vitest + Playwright** |
+
+---
+
+## 🚀 Tech Stack
+
+### Frontend
+
+* **Next.js 15 & React 18**
+* **TypeScript** for static typing
+* **Tailwind CSS** for utility-first styling
+* **Lucide Icons** for consistent iconography
+
+### State & Data
+
+* **React Hooks** for local state
+* **TanStack Query** for server state management
+* **Prisma ORM** for type-safe database access
+* **Zod** for schema validation
+
+### Auth & Security
+
+* **NextAuth.js** for authentication
+* **Bcrypt** for password hashing
+* **Security:** Built-in protection against CSRF, XSS, and SQL Injection
+
+### Testing & Quality
+
+* **Vitest** for unit and integration testing
+* **Playwright** for end-to-end (E2E) testing
+* **ESLint 9** for linting
+* Full type coverage across the application
+
+### Performance
+
+* **Hybrid rendering** (SSR / SSG / ISR)
+* Next.js Image Optimization
+* Optimized for **LCP** (Largest Contentful Paint) and **INP** (Interaction to Next Paint)
+
+---
+
+## 🎯 Features
+
+### Job Seekers
+
+* **Advanced Search:** Full-text search across job titles, descriptions, companies, and locations
+* **Job type filtering:** Full-time, Part-time, Contract, and Freelance categories
+* **Remote-only toggle:** Filter specifically for remote opportunities
+* **Rich job details:** Comprehensive job descriptions with company information
+* **Responsive UI:** Seamless experience across all device sizes
+
+### Employers
+
+* **Secure authentication:** Login and registration for company accounts
+* **Job Dashboard:** Centralized view of all your posted jobs
+* **Create, Edit, Delete:** Full CRUD operations for job postings
+* **Real-time updates:** Instant feedback on job modifications
+* **Company Branding:** Manage logos and metadata for professional profiles
+
+### Platform Features
+
+* **RESTful API:** Well-structured API endpoints for job operations
+* **Type-safe operations:** End-to-end type safety with TypeScript and Zod validation
+* **Role-based access:** Admin and user role separation
+* **Optimized performance:** Server-side rendering and incremental static regeneration
+
+---
+
+## 🛠️ Setup
+
+### Prerequisites
+
+* Node.js 18+
+* npm, yarn, or pnpm
+
+### Installation
+
+```bash
+git clone https://github.com/alwaysvivek/job_board.git
+cd job_board
+npm install
+
+```
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+DATABASE_URL="file:./dev.db"
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key-here"
+
+```
+
+### Database
+
+```bash
+npx prisma generate
+npx prisma db push
+
+```
+
+---
+
+## 🚀 Running the App
+
+```bash
+npm run dev        # Development mode
+npm run build      # Production build
+npm run start      # Production server
+
+```
+
+## 🧪 Testing
+
+```bash
+npm run test        # Run Vitest suites
+npx playwright install
+npm run test:e2e    # Run Playwright E2E tests
+
+```
+
+---
+
+## 📁 Project Structure (Simplified)
+
+* `app/` — Next.js App Router (routes, layouts, APIs)
+  * `api/jobs/` — Job CRUD and search endpoints
+  * `dashboard/` — User job management dashboard
+  * `jobs/[id]/` — Job detail and edit pages
+  * `search/` — Search results page
+* `components/` — Reusable React UI components
+* `lib/` — Shared logic (auth, prisma client, utils)
+* `prisma/` — Database schema and migrations
+* `__tests__/` — Combined unit and E2E test suites
+
+---
+
+## 🔌 API Endpoints
+
+### Jobs
+
+* `GET /api/jobs` — List all jobs
+* `POST /api/jobs` — Create a new job (authenticated)
+* `GET /api/jobs/[id]` — Get a specific job
+* `PUT /api/jobs/[id]` — Update a job (owner/admin only)
+* `DELETE /api/jobs/[id]` — Delete a job (owner/admin only)
+* `GET /api/jobs/search?q=query` — Search jobs by keyword
+
+### Authentication
+
+* `POST /api/auth/signup` — Register a new user
+* `POST /api/auth/signin` — Sign in a user
+* `POST /api/auth/signout` — Sign out a user
+
+---
+
+## 💼 Skills Demonstrated
+
+This project showcases a comprehensive full-stack skill set suitable for modern web development:
+
+### Backend Developer Skills
+
+| **Category** | **Skills** |
+| --- | --- |
+| **Languages** | TypeScript, JavaScript, SQL |
+| **Backend Frameworks** | Next.js API Routes, Server Components |
+| **API Design** | RESTful APIs, CRUD Operations, Search Endpoints, Error Handling |
+| **Databases** | PostgreSQL (Prisma ORM, Relations, Indexing, ACID Transactions) |
+| **Security & Validation** | NextAuth.js, Bcrypt, Zod Schema Validation, CSRF Protection |
+| **Architecture** | Server-Side Rendering (SSR), Incremental Static Regeneration (ISR) |
+
+### Full-Stack Developer Skills
+
+| **Category** | **Skills** |
+| --- | --- |
+| **Frontend** | React 18, Next.js 15, HTML5, CSS3, TypeScript, Tailwind CSS |
+| **Frontend UX** | Responsive Design, Accessibility (ARIA), Glassmorphism Design |
+| **State & Data** | React Hooks, Server Components, Client Components, Form Handling |
+| **Backend & Infrastructure** | Next.js API Routes, Prisma ORM, PostgreSQL, Authentication |
+| **Product & Workflow** | CRUD Operations, Search, Dashboard, Role-Based Access Control |
+| **Delivery & Docs** | Git, GitHub, CI/CD Ready, Documentation |
+| **Testing & QA** | Vitest (Unit Tests), Playwright (E2E Tests), Type Safety |
+
+---
+
+## 🎨 UX & Design Philosophy
+
+* **Clear CTAs:** Focused user paths for both seekers and employers
+* **Reduced Cognitive Load:** Minimalist layouts with high readability
+* **Accessibility:** ARIA labels and full keyboard navigation support
+* **Atomic Design:** Consistent component system applied to Tailwind
+* **Glassmorphism:** Subtle visual depth for a modern, premium aesthetic
+
+---
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+
+This project is optimized for deployment on Vercel:
+
+1. **Push to GitHub:** Ensure your code is pushed to a GitHub repository
+2. **Import to Vercel:** Connect your repository in the Vercel dashboard
+3. **Environment Variables:** Add the following in Vercel settings:
+   ```
+   DATABASE_URL=your_postgresql_connection_string
+   NEXTAUTH_URL=your_production_url
+   NEXTAUTH_SECRET=your_secret_key
+   ```
+4. **Deploy:** Vercel will automatically build and deploy your app
+
+### Database Setup
+
+* **Recommended:** Use [Neon](https://neon.tech/) or [Supabase](https://supabase.com/) for serverless PostgreSQL
+* Run migrations: `npx prisma db push` or `npx prisma migrate deploy`
+* Seed data (optional): `npx prisma db seed`
+
+### Build Configuration
+
+The project is pre-configured for Vercel with:
+* Automatic Prisma Client generation during build
+* Next.js 15 optimizations enabled
+* TypeScript strict mode
+* Production-ready environment handling
+
+---
+
+## 📝 License
+
+This project is licensed under the **MIT License**.
+
+## ✨ Why this project matters
+
+This isn't just a CRUD app; it’s a modern frontend showcase demonstrating real-world architecture, testing discipline, performance awareness, and clean, maintainable code.
+
+---
+
+## 🎓 Perfect for Freshers & Entry-Level Developers
+
+### Why This Project Stands Out
+
+This project is an excellent portfolio piece for freshers because it demonstrates:
+
+* **Learning & Growth:** Started from a forked project and extended it significantly
+* **Practical Skills:** Not just theory - actual working full-stack application
+* **Modern Technologies:** Experience with industry-standard tools (Next.js, TypeScript, PostgreSQL)
+* **Problem Solving:** Implemented complex features like search, authentication, and CRUD operations
+* **Best Practices:** Clean code structure, validation, error handling, and security basics
+
+### Skills You Can Highlight on Your Resume
+
+**Frontend Development:**
+- React 18 with modern hooks (useState, useEffect)
+- Next.js 15 (App Router, Server Components, Client Components)
+- TypeScript for type-safe code
+- Tailwind CSS for responsive design
+- Form handling and validation
+
+**Backend Development:**
+- RESTful API design and implementation
+- Database design with PostgreSQL and Prisma ORM
+- Authentication with NextAuth.js
+- CRUD operations with proper HTTP methods
+- Search functionality and data filtering
+
+**General Software Development:**
+- Git version control and GitHub workflow
+- Environment configuration and secrets management
+- Error handling and user feedback
+- Code organization and component architecture
+- Deployment to production (Vercel)
+
+### Interview Talking Points
+
+1. **"I learned by doing"** - Extended an open-source project with custom features
+2. **"Full-stack capabilities"** - Built both frontend UI and backend API endpoints
+3. **"Type-safe development"** - Used TypeScript throughout for better code quality
+4. **"Real-world features"** - Implemented search, filtering, user dashboards, not just basic CRUD
+5. **"Production deployment"** - Deployed and running on Vercel with real database
+6. **"Security conscious"** - Implemented authentication, authorization, and input validation
+
+---
+
+## 🚀 Getting Started (For Freshers)
+
+If you're a fresher looking to understand or extend this project:
+
+1. **Clone and explore** the codebase structure
+2. **Read through** the components in `/components` to understand React patterns
+3. **Study** the API routes in `/app/api` to learn backend development
+4. **Experiment** by adding small features or styling changes
+5. **Deploy** your own version to Vercel to showcase to employers
+
+### Recommended Learning Path
+
+1. Start with the **job listing page** (`app/page.tsx`) - understand data fetching
+2. Explore **components** - see how reusable UI is built
+3. Study **API routes** - learn how backend endpoints work
+4. Review **authentication** flow in `lib/auth.ts`
+5. Understand **database schema** in `prisma/schema.prisma`
+

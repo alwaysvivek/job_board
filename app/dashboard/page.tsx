@@ -37,6 +37,18 @@ export default async function DashboardPage() {
     },
   })
 
+  // Transform jobs to match the Job type
+  const transformedJobs = jobs.map(job => ({
+    ...job,
+    user: job.user ? {
+      ...job.user,
+      id: '',
+      admin: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } : undefined
+  }))
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -49,7 +61,7 @@ export default async function DashboardPage() {
                 My Jobs Dashboard
               </h1>
               <p className="text-lg text-gray-600 font-medium">
-                Manage your {jobs.length} job posting{jobs.length !== 1 ? 's' : ''}
+                Manage your {transformedJobs.length} job posting{transformedJobs.length !== 1 ? 's' : ''}
               </p>
             </div>
             <Link
@@ -64,7 +76,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {jobs.length === 0 ? (
+        {transformedJobs.length === 0 ? (
           <div className="card text-center py-16">
             <div className="mb-6">
               <svg className="w-24 h-24 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +92,7 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ) : (
-          <JobDashboardList jobs={jobs} />
+          <JobDashboardList jobs={transformedJobs} />
         )}
       </main>
     </div>
