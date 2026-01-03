@@ -12,7 +12,7 @@ export interface Job {
   userId: string
   createdAt: Date
   updatedAt: Date
-  user?: User
+  user?: Partial<User>
 }
 
 export interface User {

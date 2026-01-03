@@ -3,12 +3,16 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
+import JobActions from '@/components/JobActions'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 interface PageProps {
   params: Promise<{ id: string }>
 }
 
 export default async function JobDetailPage({ params }: PageProps) {
+  const session = await getServerSession(authOptions)
   const { id } = await params
   const job = await prisma.job.findUnique({
     where: { id },
@@ -26,6 +30,16 @@ export default async function JobDetailPage({ params }: PageProps) {
     notFound()
   }
 
+  // Check if current user can edit this job
+  let canEdit = false
+  if (session?.user?.id) {
+    const currentUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { admin: true },
+    })
+    canEdit = job.userId === session.user.id || currentUser?.admin === true
+  }
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -41,6 +55,8 @@ export default async function JobDetailPage({ params }: PageProps) {
           </svg>
           Back to Jobs
         </Link>
+
+        <JobActions jobId={job.id} canEdit={canEdit} />
 
         <article className="glass rounded-glass p-8 md:p-10">
           <div className="flex items-start justify-between mb-8">

@@ -18,6 +18,13 @@ export default function Header() {
             {session ? (
               <>
                 <Link
+                  href="/dashboard"
+                  className="text-gray-700 hover:text-primary-600 font-medium transition-colors duration-300"
+                  aria-label="My dashboard"
+                >
+                  My Jobs
+                </Link>
+                <Link
                   href="/jobs/new"
                   className="btn-primary"
                   aria-label="Post a new job"
