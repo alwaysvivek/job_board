@@ -1,24 +1,44 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { JOB_TYPES } from '@/types'
+import { JOB_TYPES, Job } from '@/types'
 
-export default function JobForm() {
+interface JobFormProps {
+  job?: Job
+  mode?: 'create' | 'edit'
+}
+
+export default function JobForm({ job, mode = 'create' }: JobFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    url: '',
-    jobType: 'Full-time',
-    location: '',
-    jobAuthor: '',
-    remoteOk: false,
-    applyUrl: '',
+    title: job?.title || '',
+    description: job?.description || '',
+    url: job?.url || '',
+    jobType: job?.jobType || 'Full-time',
+    location: job?.location || '',
+    jobAuthor: job?.jobAuthor || '',
+    remoteOk: job?.remoteOk || false,
+    applyUrl: job?.applyUrl || '',
   })
+
+  useEffect(() => {
+    if (job) {
+      setFormData({
+        title: job.title,
+        description: job.description,
+        url: job.url || '',
+        jobType: job.jobType,
+        location: job.location,
+        jobAuthor: job.jobAuthor || '',
+        remoteOk: job.remoteOk,
+        applyUrl: job.applyUrl,
+      })
+    }
+  }, [job])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
@@ -35,8 +55,11 @@ export default function JobForm() {
     setError(null)
 
     try {
-      const response = await fetch('/api/jobs', {
-        method: 'POST',
+      const url = mode === 'edit' ? `/api/jobs/${job?.id}` : '/api/jobs'
+      const method = mode === 'edit' ? 'PUT' : 'POST'
+      
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -45,11 +68,12 @@ export default function JobForm() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Failed to create job')
+        throw new Error(data.error || `Failed to ${mode} job`)
       }
 
-      const job = await response.json()
-      router.push(`/jobs/${job.id}`)
+      const updatedJob = await response.json()
+      router.push(`/jobs/${updatedJob.id}`)
+      router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
@@ -199,7 +223,10 @@ export default function JobForm() {
         disabled={loading}
         className="btn-primary w-full text-lg py-4"
       >
-        {loading ? 'Posting Job...' : 'Post Job'}
+        {loading 
+          ? (mode === 'edit' ? 'Updating Job...' : 'Posting Job...') 
+          : (mode === 'edit' ? 'Update Job' : 'Post Job')
+        }
       </button>
     </form>
   )
