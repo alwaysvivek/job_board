@@ -69,7 +69,7 @@ export default async function BookmarksPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
             </svg>
             <p className="text-xl text-gray-600 mb-2">No bookmarked jobs yet</p>
-            <p className="text-gray-500 mb-6">Start bookmarking jobs you're interested in</p>
+            <p className="text-gray-500 mb-6">Start bookmarking jobs you&apos;re interested in</p>
             <Link href="/" className="btn-primary inline-block">
               Browse Jobs
             </Link>

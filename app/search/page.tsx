@@ -1,8 +1,10 @@
 import { prisma } from '@/lib/prisma'
 import JobList from '@/components/JobList'
 import Header from '@/components/Header'
-import SearchBar from '@/components/SearchBar'
+import JobFilters from '@/components/JobFilters'
 import Link from 'next/link'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 export const revalidate = 60
 
@@ -11,45 +13,65 @@ interface PageProps {
 }
 
 export default async function SearchPage({ searchParams }: PageProps) {
+  const session = await getServerSession(authOptions)
   const resolvedParams = await searchParams
   const query = resolvedParams.q as string | undefined
   const jobType = resolvedParams.jobType as string | undefined
   const remoteOnly = resolvedParams.remote === 'true'
 
   // Build where clause
-  const where: any = {}
-
-  if (query) {
-    where.OR = [
-      { title: { contains: query, mode: 'insensitive' } },
-      { description: { contains: query, mode: 'insensitive' } },
-      { jobAuthor: { contains: query, mode: 'insensitive' } },
-      { location: { contains: query, mode: 'insensitive' } },
+  const where: any = {
+    AND: [
+      {
+        OR: [
+          { expiresAt: null },
+          { expiresAt: { gte: new Date() } }
+        ]
+      }
     ]
   }
 
+  if (query) {
+    where.AND.push({
+      OR: [
+        { title: { contains: query, mode: 'insensitive' } },
+        { description: { contains: query, mode: 'insensitive' } },
+        { jobAuthor: { contains: query, mode: 'insensitive' } },
+        { location: { contains: query, mode: 'insensitive' } },
+      ]
+    })
+  }
+
   if (jobType) {
-    where.jobType = jobType
+    where.AND.push({ jobType })
   }
 
   if (remoteOnly) {
-    where.remoteOk = true
+    where.AND.push({ remoteOk: true })
   }
 
-  const jobs = await prisma.job.findMany({
-    where,
-    include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
+  const [jobs, bookmarkedJobIds] = await Promise.all([
+    prisma.job.findMany({
+      where,
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
         },
       },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  })
+      orderBy: {
+        createdAt: 'desc',
+      },
+    }),
+    session?.user?.id 
+      ? prisma.bookmark.findMany({
+          where: { userId: session.user.id },
+          select: { jobId: true }
+        }).then(bookmarks => bookmarks.map(b => b.jobId))
+      : Promise.resolve([])
+  ])
 
   return (
     <div className="min-h-screen">
@@ -78,7 +100,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
           )}
         </div>
 
-        <SearchBar />
+        <JobFilters selectedType={jobType} />
         
         {jobs.length === 0 ? (
           <div className="card text-center py-16">
@@ -96,7 +118,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
             </Link>
           </div>
         ) : (
-          <JobList jobs={jobs} />
+          <JobList jobs={jobs} bookmarkedJobIds={bookmarkedJobIds} />
         )}
       </main>
     </div>
