@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { JOB_TYPES, Job } from '@/types'
 
@@ -24,21 +24,6 @@ export default function JobForm({ job, mode = 'create' }: JobFormProps) {
     remoteOk: job?.remoteOk || false,
     applyUrl: job?.applyUrl || '',
   })
-
-  useEffect(() => {
-    if (job) {
-      setFormData({
-        title: job.title,
-        description: job.description,
-        url: job.url || '',
-        jobType: job.jobType,
-        location: job.location,
-        jobAuthor: job.jobAuthor || '',
-        remoteOk: job.remoteOk,
-        applyUrl: job.applyUrl,
-      })
-    }
-  }, [job])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target

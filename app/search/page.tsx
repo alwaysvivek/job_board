@@ -51,18 +51,6 @@ export default async function SearchPage({ searchParams }: PageProps) {
     },
   })
 
-  // Transform jobs to match the Job type
-  const transformedJobs = jobs.map(job => ({
-    ...job,
-    user: job.user ? {
-      ...job.user,
-      id: '',
-      admin: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    } : undefined
-  }))
-
   return (
     <div className="min-h-screen">
       <Header />
@@ -108,7 +96,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
             </Link>
           </div>
         ) : (
-          <JobList jobs={transformedJobs} />
+          <JobList jobs={jobs} />
         )}
       </main>
     </div>
