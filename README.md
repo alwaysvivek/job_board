@@ -104,11 +104,21 @@ npm install
 Create a `.env` file in the root directory:
 
 ```env
-DATABASE_URL="file:./dev.db"
+# Database (PostgreSQL connection string)
+# For local development, you can use a local PostgreSQL instance
+# For production (Vercel), use Neon, Supabase, or any PostgreSQL provider
+DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"
+
+# NextAuth.js
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-secret-key-here"
-
 ```
+
+**For Vercel Deployment:**
+1. Add these environment variables in your Vercel project settings
+2. Use a PostgreSQL provider like [Neon](https://neon.tech), [Supabase](https://supabase.com), or [Railway](https://railway.app)
+3. Set `NEXTAUTH_URL` to your production domain (e.g., `https://your-app.vercel.app`)
+4. Generate a secure `NEXTAUTH_SECRET` using: `openssl rand -base64 32`
 
 ### Database
 
@@ -122,12 +132,36 @@ npx prisma db push
 
 ## 🚀 Running the App
 
+### Development
+
 ```bash
-npm run dev        # Development mode
+npm run dev        # Development mode at http://localhost:3000
+```
+
+### Production
+
+```bash
 npm run build      # Production build
 npm run start      # Production server
-
 ```
+
+### Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/alwaysvivek/job_board)
+
+**Deployment Steps:**
+1. Click the button above or connect your GitHub repository to Vercel
+2. Configure environment variables in Vercel dashboard:
+   - `DATABASE_URL` - Your PostgreSQL connection string
+   - `NEXTAUTH_URL` - Your production URL
+   - `NEXTAUTH_SECRET` - A secure random string
+3. Deploy! Vercel will automatically run `prisma generate` and build your app
+
+**Database Setup for Vercel:**
+- We recommend [Neon](https://neon.tech) (serverless PostgreSQL with free tier)
+- After deployment, run migrations: `npx prisma db push` or `npx prisma migrate deploy`
+
+---
 
 ## 🧪 Testing
 
