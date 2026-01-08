@@ -66,6 +66,160 @@ This project focuses on clean UX, type safety, testing, and Core Web Vitals, whi
 
 ---
 
+## 🏗️ Architecture Overview
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        Browser["🌐 Browser"]
+        UI["React 18 Components"]
+    end
+
+    subgraph "app/ - Next.js 15 App Router"
+        HomePage["page.tsx<br/>(Homepage)"]
+        JobDetailPage["jobs/[id]/page.tsx<br/>(Job Details)"]
+        NewJobPage["jobs/new/page.tsx<br/>(Create Job)"]
+        SignInPage["auth/signin/page.tsx"]
+        Layout["layout.tsx<br/>(Root Layout)"]
+        Providers["providers.tsx<br/>(TanStack Query)"]
+    end
+
+    subgraph "components/ - UI Components"
+        Header["Header.tsx<br/>(Navigation)"]
+        JobCard["JobCard.tsx<br/>(Job Display)"]
+        JobList["JobList.tsx<br/>(Job Grid)"]
+        FilterBar["FilterBar.tsx<br/>(Filters)"]
+        JobForm["JobForm.tsx<br/>(Create/Edit)"]
+    end
+
+    subgraph "app/api/ - API Routes"
+        JobsAPI["api/jobs/route.ts<br/>(GET, POST)"]
+        AuthAPI["api/auth/[...nextauth]/route.ts<br/>(NextAuth Handler)"]
+        SignupAPI["api/auth/signup/route.ts<br/>(User Registration)"]
+    end
+
+    subgraph "lib/ - Core Logic"
+        AuthConfig["auth.ts<br/>(NextAuth Config)"]
+        PrismaClient["prisma.ts<br/>(DB Client)"]
+    end
+
+    subgraph "Database Layer"
+        Neon["🗄️ Neon PostgreSQL<br/>(Serverless DB)"]
+        PrismaAdapter["@prisma/adapter-neon<br/>(Connection Pool)"]
+    end
+
+    subgraph "prisma/ - Database Schema"
+        Schema["schema.prisma<br/>(Models: User, Job,<br/>Account, Session)"]
+        Migrations["migrations/<br/>(DB Versions)"]
+        Seed["seed.ts<br/>(Sample Data)"]
+    end
+
+    subgraph "types/ - TypeScript"
+        Types["index.ts<br/>(Job, User types)"]
+    end
+
+    subgraph "Testing"
+        Vitest["__tests__/<br/>(Unit Tests)"]
+        Playwright["e2e/<br/>(E2E Tests)"]
+    end
+
+    subgraph "Tech Stack"
+        NextJS["Next.js 15"]
+        TypeScript["TypeScript 5"]
+        Tailwind["Tailwind CSS"]
+        Prisma["Prisma ORM"]
+        NextAuth["NextAuth.js"]
+        TanStack["TanStack Query"]
+        Zod["Zod Validation"]
+        Bcrypt["Bcrypt Hashing"]
+    end
+
+    %% Client to App Router
+    Browser --> UI
+    UI --> HomePage
+    UI --> JobDetailPage
+    UI --> NewJobPage
+    UI --> SignInPage
+
+    %% App Router to Components
+    HomePage --> Header
+    HomePage --> FilterBar
+    HomePage --> JobList
+    JobList --> JobCard
+    NewJobPage --> JobForm
+    Layout --> Providers
+
+    %% Components to API
+    JobForm --> JobsAPI
+    SignInPage --> AuthAPI
+    FilterBar --> HomePage
+
+    %% API to Core Logic
+    JobsAPI --> AuthConfig
+    JobsAPI --> PrismaClient
+    AuthAPI --> AuthConfig
+    SignupAPI --> PrismaClient
+    AuthConfig --> PrismaClient
+
+    %% Core Logic to Database
+    PrismaClient --> PrismaAdapter
+    PrismaAdapter --> Neon
+
+    %% Schema to Database
+    Schema --> Neon
+    Migrations --> Neon
+    Seed --> PrismaClient
+
+    %% Types
+    Types --> JobCard
+    Types --> JobForm
+    Types --> JobsAPI
+
+    %% Tech Stack Connections
+    NextJS -.-> HomePage
+    NextJS -.-> JobsAPI
+    TypeScript -.-> Types
+    Tailwind -.-> UI
+    Prisma -.-> PrismaClient
+    NextAuth -.-> AuthConfig
+    TanStack -.-> Providers
+    Zod -.-> JobsAPI
+    Bcrypt -.-> AuthConfig
+
+    %% Testing
+    Vitest -.-> Types
+    Playwright -.-> Browser
+
+    classDef client fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    classDef router fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef component fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef api fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    classDef lib fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef db fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef tech fill:#e0f2f1,stroke:#004d40,stroke-width:2px
+    classDef test fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+
+    class Browser,UI client
+    class HomePage,JobDetailPage,NewJobPage,SignInPage,Layout,Providers router
+    class Header,JobCard,JobList,FilterBar,JobForm component
+    class JobsAPI,AuthAPI,SignupAPI api
+    class AuthConfig,PrismaClient lib
+    class Neon,PrismaAdapter,Schema,Migrations,Seed db
+    class NextJS,TypeScript,Tailwind,Prisma,NextAuth,TanStack,Zod,Bcrypt tech
+    class Vitest,Playwright test
+```
+
+### 📊 Data Flow
+
+1. **User Request** → Browser loads React components
+2. **Page Rendering** → Next.js App Router (SSR/SSG) fetches data via Prisma
+3. **User Actions** → Components call API routes with validation (Zod)
+4. **Authentication** → NextAuth.js validates JWT sessions
+5. **Database Operations** → Prisma ORM → Neon Adapter → PostgreSQL
+6. **Response** → JSON data → TanStack Query cache → UI update
+
+---
+
 ## 🎯 Features
 
 ### Job Seekers
