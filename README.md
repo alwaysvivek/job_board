@@ -69,144 +69,64 @@ This project focuses on clean UX, type safety, testing, and Core Web Vitals, whi
 ## 🏗️ Architecture Overview
 
 ```mermaid
-graph TB
-    subgraph "Client Layer"
-        Browser["🌐 Browser"]
-        UI["React 18 Components"]
+graph LR
+    subgraph Client["🌐 Client Layer"]
+        Browser["Browser<br/>(React 18)"]
     end
 
-    subgraph "app/ - Next.js 15 App Router"
-        HomePage["page.tsx<br/>(Homepage)"]
-        JobDetailPage["jobs/[id]/page.tsx<br/>(Job Details)"]
-        NewJobPage["jobs/new/page.tsx<br/>(Create Job)"]
-        SignInPage["auth/signin/page.tsx"]
-        Layout["layout.tsx<br/>(Root Layout)"]
-        Providers["providers.tsx<br/>(TanStack Query)"]
+    subgraph Frontend["📱 Frontend - app/ & components/"]
+        Pages["Pages<br/>page.tsx<br/>jobs/[id]<br/>auth/signin"]
+        Components["Components<br/>JobCard<br/>JobForm<br/>FilterBar"]
     end
 
-    subgraph "components/ - UI Components"
-        Header["Header.tsx<br/>(Navigation)"]
-        JobCard["JobCard.tsx<br/>(Job Display)"]
-        JobList["JobList.tsx<br/>(Job Grid)"]
-        FilterBar["FilterBar.tsx<br/>(Filters)"]
-        JobForm["JobForm.tsx<br/>(Create/Edit)"]
+    subgraph API["⚡ API Routes - app/api/"]
+        Routes["Jobs API<br/>Auth API<br/>Signup API"]
     end
 
-    subgraph "app/api/ - API Routes"
-        JobsAPI["api/jobs/route.ts<br/>(GET, POST)"]
-        AuthAPI["api/auth/[...nextauth]/route.ts<br/>(NextAuth Handler)"]
-        SignupAPI["api/auth/signup/route.ts<br/>(User Registration)"]
+    subgraph Logic["🔧 Core - lib/"]
+        Auth["NextAuth<br/>Config"]
+        DB["Prisma<br/>Client"]
     end
 
-    subgraph "lib/ - Core Logic"
-        AuthConfig["auth.ts<br/>(NextAuth Config)"]
-        PrismaClient["prisma.ts<br/>(DB Client)"]
+    subgraph Database["🗄️ Database"]
+        Postgres["Neon<br/>PostgreSQL"]
+        Schema["Prisma Schema<br/>User, Job<br/>Account, Session"]
     end
 
-    subgraph "Database Layer"
-        Neon["🗄️ Neon PostgreSQL<br/>(Serverless DB)"]
-        PrismaAdapter["@prisma/adapter-neon<br/>(Connection Pool)"]
+    subgraph Stack["🛠️ Tech Stack"]
+        Tech1["Next.js 15<br/>TypeScript 5"]
+        Tech2["Tailwind CSS<br/>TanStack Query"]
+        Tech3["Prisma ORM<br/>Zod Validation"]
     end
 
-    subgraph "prisma/ - Database Schema"
-        Schema["schema.prisma<br/>(Models: User, Job,<br/>Account, Session)"]
-        Migrations["migrations/<br/>(DB Versions)"]
-        Seed["seed.ts<br/>(Sample Data)"]
-    end
+    %% Main Flow
+    Browser -->|User Request| Pages
+    Pages -->|Renders| Components
+    Components -->|API Calls| Routes
+    Routes -->|Validates & Auth| Auth
+    Routes -->|CRUD Operations| DB
+    Auth -->|Session Check| DB
+    DB -->|Queries| Postgres
+    Schema -.->|Defines| Postgres
 
-    subgraph "types/ - TypeScript"
-        Types["index.ts<br/>(Job, User types)"]
-    end
+    %% Tech Stack
+    Tech1 -.->|Powers| Pages
+    Tech2 -.->|Styles & State| Components
+    Tech3 -.->|Validates & ORM| Routes
 
-    subgraph "Testing"
-        Vitest["__tests__/<br/>(Unit Tests)"]
-        Playwright["e2e/<br/>(E2E Tests)"]
-    end
+    classDef clientStyle fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    classDef frontendStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+    classDef apiStyle fill:#e8f5e9,stroke:#388e3c,stroke-width:3px
+    classDef logicStyle fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+    classDef dbStyle fill:#fce4ec,stroke:#c2185b,stroke-width:3px
+    classDef techStyle fill:#e0f2f1,stroke:#00796b,stroke-width:2px
 
-    subgraph "Tech Stack"
-        NextJS["Next.js 15"]
-        TypeScript["TypeScript 5"]
-        Tailwind["Tailwind CSS"]
-        Prisma["Prisma ORM"]
-        NextAuth["NextAuth.js"]
-        TanStack["TanStack Query"]
-        Zod["Zod Validation"]
-        Bcrypt["Bcrypt Hashing"]
-    end
-
-    %% Client to App Router
-    Browser --> UI
-    UI --> HomePage
-    UI --> JobDetailPage
-    UI --> NewJobPage
-    UI --> SignInPage
-
-    %% App Router to Components
-    HomePage --> Header
-    HomePage --> FilterBar
-    HomePage --> JobList
-    JobList --> JobCard
-    NewJobPage --> JobForm
-    Layout --> Providers
-
-    %% Components to API
-    JobForm --> JobsAPI
-    SignInPage --> AuthAPI
-    FilterBar --> HomePage
-
-    %% API to Core Logic
-    JobsAPI --> AuthConfig
-    JobsAPI --> PrismaClient
-    AuthAPI --> AuthConfig
-    SignupAPI --> PrismaClient
-    AuthConfig --> PrismaClient
-
-    %% Core Logic to Database
-    PrismaClient --> PrismaAdapter
-    PrismaAdapter --> Neon
-
-    %% Schema to Database
-    Schema --> Neon
-    Migrations --> Neon
-    Seed --> PrismaClient
-
-    %% Types
-    Types --> JobCard
-    Types --> JobForm
-    Types --> JobsAPI
-
-    %% Tech Stack Connections
-    NextJS -.-> HomePage
-    NextJS -.-> JobsAPI
-    TypeScript -.-> Types
-    Tailwind -.-> UI
-    Prisma -.-> PrismaClient
-    NextAuth -.-> AuthConfig
-    TanStack -.-> Providers
-    Zod -.-> JobsAPI
-    Bcrypt -.-> AuthConfig
-
-    %% Testing
-    Vitest -.-> Types
-    Playwright -.-> Browser
-
-    classDef client fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    classDef router fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef component fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    classDef api fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    classDef lib fill:#fff9c4,stroke:#f57f17,stroke-width:2px
-    classDef db fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    classDef tech fill:#e0f2f1,stroke:#004d40,stroke-width:2px
-    classDef test fill:#f1f8e9,stroke:#33691e,stroke-width:2px
-
-    class Browser,UI client
-    class HomePage,JobDetailPage,NewJobPage,SignInPage,Layout,Providers router
-    class Header,JobCard,JobList,FilterBar,JobForm component
-    class JobsAPI,AuthAPI,SignupAPI api
-    class AuthConfig,PrismaClient lib
-    class Neon,PrismaAdapter,Schema,Migrations,Seed db
-    class NextJS,TypeScript,Tailwind,Prisma,NextAuth,TanStack,Zod,Bcrypt tech
-    class Vitest,Playwright test
+    class Browser clientStyle
+    class Pages,Components frontendStyle
+    class Routes apiStyle
+    class Auth,DB logicStyle
+    class Postgres,Schema dbStyle
+    class Tech1,Tech2,Tech3 techStyle
 ```
 
 ### 📊 Data Flow
